@@ -26,7 +26,6 @@ const Game = (() => {
     let players = ["X", "O"];
     let currentPlayer = players[0];
     let gameOver = false;
-    let gameboard = Gameboard.gameboard;
 
 
     const winconditions = [
@@ -48,12 +47,14 @@ const Game = (() => {
 
     const handleClick = (event) => {
         let index = parseInt(event.target.id.split("-")[1]);
-        if (gameboard[index] === "") {
-            makeMove(index);
+        gameboard = Gameboard.gameboard;
+        if (gameOver === true) {
+            alert("Game is finished. Click restart to go again.")
         } else if (gameboard[index] != "") {
             alert("This cell is occupied.")
+        } else if (gameboard[index] === "") {
+            makeMove(index);
         }
-        checkWin();
     }
 
     const makeMove = (index) => {
@@ -61,6 +62,7 @@ const Game = (() => {
         console.log(gameboard[index]);
         let cell = document.getElementById(`square-${index}`)
         cell.textContent = currentPlayer;
+        checkWin(currentPlayer);
         switchPlayer();
     }
 
@@ -68,14 +70,25 @@ const Game = (() => {
         if (currentPlayer = currentPlayer === "X" ? "O" : "X") {
             return true
         }
+        changeActivePlayer(currentPlayer);
         return false
     }
+
+    const changeActivePlayer = (currentPlayer) => {
+        if (currentPlayer === "X") {
+            let activePlayerIcon = document.getElementsById("player-icon-x");
+            activePlayerIcon.classList.add("active-player")
+        }
+
+    }
+
 
     const checkWin = (currentPlayer) => {
         for(let i = 0; i < winconditions.length; i++){
         const [a, b, c] = winconditions[i]
         if(gameboard[a] === currentPlayer && gameboard[b] === currentPlayer && gameboard[c] === currentPlayer){
-            console.log(`${currentPlayer} +  wins!`);
+            alert(`Player ${currentPlayer} wins!`);
+            gameOver = true;
         }
     }
     }
@@ -92,11 +105,9 @@ const Game = (() => {
     const restartGame = () => {
             let restartBtn = document.getElementById("restart-button");
             restartBtn.addEventListener("click", function() {
-                let cells = document.getElementsByClassName("square")
-                Array.from(cells).forEach((cell) => {
-                    cell.textContent = "";
-                })
+                window.location.reload();
             })
+            gameOver = false;
     }
 
     return {
