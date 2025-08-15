@@ -63,6 +63,7 @@ const Game = (() => {
         let cell = document.getElementById(`square-${index}`)
         cell.textContent = currentPlayer;
         checkWin(currentPlayer);
+        makeActivePlayer(currentPlayer);
         switchPlayer();
     }
 
@@ -70,18 +71,22 @@ const Game = (() => {
         if (currentPlayer = currentPlayer === "X" ? "O" : "X") {
             return true
         }
-        changeActivePlayer(currentPlayer);
         return false
     }
 
-    const changeActivePlayer = (currentPlayer) => {
+    const makeActivePlayer = (currentPlayer) => {
         if (currentPlayer === "X") {
-            let activePlayerIcon = document.getElementsById("player-icon-x");
-            activePlayerIcon.classList.add("active-player")
+            const playerIconO = document.getElementById("icon-o");
+            playerIconO.style.backgroundColor = "#9eb984";
+            const playerIconX = document.getElementById("icon-x");
+            playerIconX.style.backgroundColor = "#f0f0f0";
+        } else if (currentPlayer === "O") {
+            const playerIconX = document.getElementById("icon-x")
+            playerIconX.style.backgroundColor = "#9eb984";
+            const playerIconO = document.getElementById("icon-o")
+            playerIconO.style.backgroundColor = "#f0f0f0";
         }
-
     }
-
 
     const checkWin = (currentPlayer) => {
         for(let i = 0; i < winconditions.length; i++){
