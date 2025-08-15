@@ -40,7 +40,6 @@ body {
     border: 2px solid black;
     cursor: pointer;
 }
-
 .player-icon {
     display: flex;
     align-items: center;
@@ -51,6 +50,10 @@ body {
     margin: 10px;
     background-color: #9eb984;
     text-align: center;
+}
+
+#icon-x {
+    background-color: #f0f0f0;
 }
 
 #restart-button {
