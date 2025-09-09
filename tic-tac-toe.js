@@ -49,7 +49,7 @@ const Game = (() => {
         let index = parseInt(event.target.id.split("-")[1]);
         gameboard = Gameboard.gameboard;
         if (gameOver === true) {
-            alert("Game is finished. Click restart to go again.")
+            alert()
         } else if (gameboard[index] != "") {
             alert("This cell is occupied.")
         } else if (gameboard[index] === "") {
@@ -92,7 +92,8 @@ const Game = (() => {
         for(let i = 0; i < winconditions.length; i++){
         const [a, b, c] = winconditions[i]
         if(gameboard[a] === currentPlayer && gameboard[b] === currentPlayer && gameboard[c] === currentPlayer){
-            alert(`Player ${currentPlayer} wins!`);
+            // alert(`Player ${currentPlayer} wins!`);
+            displayModal();
             gameOver = true;
         }
     }
@@ -113,6 +114,17 @@ const Game = (() => {
                 window.location.reload();
             })
             gameOver = false;
+    }
+
+    const displayModal = () => {
+        const modal = document.getElementById("modal")
+        const overlay = document.getElementById("overlay")
+        openModal(modal)
+    }
+    
+    const openModal = () => {
+        modal.classList.add("active")
+        overlay.classList.add("active")
     }
 
     return {
