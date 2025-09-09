@@ -1,132 +1,143 @@
-const Gameboard = (()=> {
-    let gameboard = ["", "", "", "", "", "", "", "", ""];
+
+body {
+    margin: 0;
+}
+
+.game-display {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #868B8E;
+    height: 100vh;
+}
+
+h1 {
+    margin: 0px;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    margin: 20px;
+}
+
+#gameboard {
+    display: grid;
+    background-color: #EEEDE7;
+    padding: 0px;
+    margin: 0px;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    z-index: 3;
+    border: 2px solid black;
+}
 
 
-    const render = () => {
-        let boardHTML = "";
-        gameboard.forEach((square, index) => {
-            boardHTML += `<div class="square" id="square-${index}">${square}</div>`
-        })
-        document.querySelector("#gameboard").innerHTML = boardHTML;
-        const squares = document.querySelectorAll(".square");
-        squares.forEach((square) => {
-            square.addEventListener("click", Game.handleClick);
-        })
+.square {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 80px;
+    border: 2px solid black;
+    cursor: pointer;
+}
+.player-icon {
+    display: flex;
+    align-items: center;
+    border: 2px solid black;
+    font-size: 25px;
+    height: 20px;
+    padding: 30px;
+    margin: 10px;
+    background-color: #9eb984;
+    text-align: center;
+}
 
-    }
+#icon-o {
+    background-color: #E7D2CC;
+}
 
-    return {
-        render,
-        gameboard
-    }
+#restart-button {
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #EEEDE7;
+    cursor: pointer;
+}
 
-})();
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 200ms ease-in-out;
+    background-color: #B9B7BD;
+    border: 2px solid black;
+    border-radius: 10px;
+    width: 500px;
+    max-width: 80%;
+    font-size: 20px;
+    z-index: 5;
+}
 
-const Game = (() => {
-    let players = ["X", "O"];
-    let currentPlayer = players[0];
-    let gameOver = false;
+.modal.active {
+        transform: translate(-50%, -50%) scale(1);
+}
 
+.modal-header {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid black;
+}
 
-    const winconditions = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-    ];
-    
+.modal-header .title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
 
-    const start = () => {
-        Gameboard.render();
-        restartGame();
-    }
+.modal-header .close-button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
 
-    const handleClick = (event) => {
-        let index = parseInt(event.target.id.split("-")[1]);
-        gameboard = Gameboard.gameboard;
-        if (gameOver === true) {
-            alert("Game is finished. Click restart to go again.")
-        } else if (gameboard[index] != "") {
-            alert("This cell is occupied.")
-        } else if (gameboard[index] === "") {
-            makeMove(index);
-        }
-    }
+.modal-body {
+    padding: 10px 15px;
+}
 
-    const makeMove = (index) => {
-        gameboard[index] = currentPlayer;
-        console.log(gameboard[index]);
-        let cell = document.getElementById(`square-${index}`)
-        cell.textContent = currentPlayer;
-        checkWin(currentPlayer);
-        makeActivePlayer(currentPlayer);
-        switchPlayer();
-    }
+.modal-restart-btn-container {
+    display: flex;
+    justify-content: center;
+    padding: 10px 15px;
+}
 
-    const switchPlayer = () => {
-        if (currentPlayer = currentPlayer === "X" ? "O" : "X") {
-            return true
-        }
-        return false
-    }
+.modal-restart-btn {
+    width: 50%;
+}
 
-    const makeActivePlayer = (currentPlayer) => {
-        if (currentPlayer === "X") {
-            const playerIconO = document.getElementById("icon-o");
-            playerIconO.style.backgroundColor = "#9eb984";
-            const playerIconX = document.getElementById("icon-x");
-            playerIconX.style.backgroundColor = "#f0f0f0";
-        } else if (currentPlayer === "O") {
-            const playerIconX = document.getElementById("icon-x")
-            playerIconX.style.backgroundColor = "#9eb984";
-            const playerIconO = document.getElementById("icon-o")
-            playerIconO.style.backgroundColor = "#f0f0f0";
-        }
-    }
+#overlay {
+    position: fixed;
+    transition: 200ms ease-in-out;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 4;
+    pointer-events: none;
+}
 
-    const checkWin = (currentPlayer) => {
-        for(let i = 0; i < winconditions.length; i++){
-        const [a, b, c] = winconditions[i]
-        if(gameboard[a] === currentPlayer && gameboard[b] === currentPlayer && gameboard[c] === currentPlayer){
-            alert(`Player ${currentPlayer} wins!`);
-            gameOver = true;
-        }
-    }
-    }
-
-    const checkTie = () => {
-        for(let i = 0; i < squares.length; i++) {
-        if(squares[i].textContent === "") {
-            return false;
-        }
-    }
-    return true
-    }
-
-    const restartGame = () => {
-            let restartBtn = document.getElementById("restart-button");
-            restartBtn.addEventListener("click", function() {
-                window.location.reload();
-            })
-            gameOver = false;
-    }
-
-    return {
-        start,
-        handleClick,
-        checkWin,
-        checkTie,
-        switchPlayer,
-        makeMove,
-        restartGame
-    }
-})();
-
-Game.start();
-
-
-
+#overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
