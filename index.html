@@ -10,6 +10,19 @@
     <div class="game-display">
         <h1>Tic-Tac-Toe</h1>
         <div class="container">
+            <div class="modal" id="modal">
+                <div class="modal-header">
+                    <div class="title">Player ... wins!</div>
+                    <button data-close-button class="close-button">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div>Do you wish to restart?</div>
+                </div>
+                <div class="modal-restart-btn-container">
+                    <button class="modal-restart-btn" id="restart-button">Yes</button>
+                </div>
+            </div>
+            <div id="overlay"></div>
             <div class="player-icon" id="icon-x">X</div>
             <ul id="gameboard">
                 <li class="square" data-cell></li>
@@ -26,7 +39,6 @@
         </div>  
         <div>
             <div id="messsage"></div>
-            <button id="restart-button">Restart Game</button>
             <div id="result-display"></div>
         </div>
     </div>
