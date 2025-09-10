@@ -119,7 +119,17 @@ const Game = (() => {
     const displayModal = () => {
         const modal = document.getElementById("modal")
         const overlay = document.getElementById("overlay")
+        displayWinner()
         openModal(modal)
+    }
+
+    const displayWinner = () => {
+        const winner = document.getElementById("winner")
+        if (currentPlayer === "X") {
+            winner.innerText = " " + currentPlayer + " ";
+        } else {
+            winner.innerText = "O";
+        }
     }
     
     const openModal = () => {
