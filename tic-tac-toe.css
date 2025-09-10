@@ -141,3 +141,12 @@ h1 {
     opacity: 1;
     pointer-events: all;
 }
+
+.title {
+    display: flex;
+}
+
+#winner {
+    padding-left: 5px;
+    padding-right: 5px;
+}
