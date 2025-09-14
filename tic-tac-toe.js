@@ -49,7 +49,7 @@ const Game = (() => {
         let index = parseInt(event.target.id.split("-")[1]);
         gameboard = Gameboard.gameboard;
         if (gameOver === true) {
-            alert()
+            alert("Game is already over.")
         } else if (gameboard[index] != "") {
             alert("This cell is occupied.")
         } else if (gameboard[index] === "") {
@@ -93,7 +93,7 @@ const Game = (() => {
         const [a, b, c] = winconditions[i]
         if(gameboard[a] === currentPlayer && gameboard[b] === currentPlayer && gameboard[c] === currentPlayer){
             // alert(`Player ${currentPlayer} wins!`);
-            displayModal();
+            Modal.displayModal();
             gameOver = true;
         }
     }
@@ -108,21 +108,6 @@ const Game = (() => {
     return true
     }
 
-    const restartGame = () => {
-            let restartBtn = document.getElementById("restart-button");
-            restartBtn.addEventListener("click", function() {
-                window.location.reload();
-            })
-            gameOver = false;
-    }
-
-    const displayModal = () => {
-        const modal = document.getElementById("modal")
-        const overlay = document.getElementById("overlay")
-        displayWinner()
-        openModal(modal)
-    }
-
     const displayWinner = () => {
         const winner = document.getElementById("winner")
         if (currentPlayer === "X") {
@@ -131,11 +116,15 @@ const Game = (() => {
             winner.innerText = "O";
         }
     }
-    
-    const openModal = () => {
-        modal.classList.add("active")
-        overlay.classList.add("active")
+
+    const restartGame = () => {
+            let restartBtn = document.getElementById("restart-button");
+            restartBtn.addEventListener("click", function() {
+                window.location.reload();
+            })
+            gameOver = false;
     }
+
 
     return {
         start,
@@ -144,11 +133,35 @@ const Game = (() => {
         checkTie,
         switchPlayer,
         makeMove,
+        displayWinner,
         restartGame
     }
 })();
 
+const Modal = (() => {
+
+
+    const displayModal = () => {
+        const modal = document.getElementById("modal")
+        const overlay = document.getElementById("overlay")
+        Game.displayWinner()
+        openModal(modal)
+    }
+
+    const openModal = () => {
+        modal.classList.add("active")
+        overlay.classList.add("active")
+    }
+
+    return {
+        displayModal,
+        openModal
+    }
+
+})();
+
 Game.start();
+
 
 
 
